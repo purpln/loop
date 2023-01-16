@@ -2,8 +2,10 @@
 
 import PackageDescription
 
-let loop: [Target.Dependency] = []
-#if os(Linux)
+let loop: [Target.Dependency]
+#if os(macOS) || os(iOS)
+loop = []
+#elseif os(Linux)
 loop = ["CEpoll"]
 #endif
 
