@@ -9,12 +9,16 @@ loop = ["CEpoll"]
 
 let package = Package(
     name: "Loop",
-    products: [.library(name: "Loop", targets: ["Loop"])],
+    products: [
+        .library(name: "Loop", targets: ["Loop"])
+    ],
     targets: [
         .target(name: "Loop", dependencies: loop)
     ]
 )
 
-#if os(Linux)
+#if os(macOS) || os(iOS)
+package.platforms = [.macOS(.v13), .iOS(.v16)]
+#elseif os(Linux)
 package.targets.append(.systemLibrary(name: "CEpoll"))
 #endif
