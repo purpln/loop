@@ -1,3 +1,5 @@
+public typealias Instant = ContinuousClock.Instant
+
 public let loop: Loop = .init()
 
 public actor Loop {
@@ -7,9 +9,7 @@ public actor Loop {
     public var executing: Bool = true
     
     public init() {
-        handlers = UnsafeMutableBufferPointer.allocate(
-            repeating: Handlers(),
-            count: Descriptor.maxLimit)
+        handlers = UnsafeMutableBufferPointer.allocate(repeating: Handlers(), count: Descriptor.maxLimit)
     }
     
     deinit {
@@ -26,6 +26,10 @@ public actor Loop {
         } catch {
             print("poll error:", error)
         }
+    }
+    
+    public func terminate() {
+        executing = false
     }
     
     private func poll(deadline: Instant) throws {
@@ -63,13 +67,13 @@ public actor Loop {
         switch event {
         case .read:
             guard handlers[descriptor].read == nil else {
-                handler.resume(throwing: Error.descriptorAlreadyInUse)
+                handler.resume(throwing: Loop.Error.alreadyInUse)
                 return
             }
             handlers[descriptor].read = handler
         case .write:
             guard handlers[descriptor].write == nil else {
-                handler.resume(throwing: Error.descriptorAlreadyInUse)
+                handler.resume(throwing: Loop.Error.alreadyInUse)
                 return
             }
             handlers[descriptor].write = handler
@@ -83,11 +87,5 @@ public actor Loop {
         case .write: handlers[descriptor].write = nil
         }
         poller.remove(socket: descriptor, event: event)
-    }
-}
-
-extension Loop {
-    public enum Error: Swift.Error {
-        case descriptorAlreadyInUse
     }
 }

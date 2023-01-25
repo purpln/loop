@@ -1,7 +1,3 @@
-public enum IO: Sendable {
-    case read, write
-}
-
 protocol PollerProtocol {
     var descriptor: Descriptor { get }
     mutating func poll(deadline: Instant?) throws -> ArraySlice<Event>
@@ -14,4 +10,8 @@ extension PollerProtocol {
         remove(socket: socket, event: .read)
         remove(socket: socket, event: .write)
     }
+}
+
+public enum IO: Sendable {
+    case read, write
 }

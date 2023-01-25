@@ -1,6 +1,4 @@
-public typealias Instant = ContinuousClock.Instant
-
-#if os(macOS) || os(iOS)
+#if os(macOS) || os(iOS) || os(watchOS) || os(tvOS)
 import Darwin.C
 
 extension Instant {
@@ -20,7 +18,7 @@ extension Instant {
             tv_nsec: Int(duration.components.attoseconds / 1_000_000_000))
     }
 }
-#elseif os(Linux)
+#elseif os(Linux) || os(Android) || os(FreeBSD)
 import Glibc
 
 extension Instant {

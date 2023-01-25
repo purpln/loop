@@ -1,0 +1,4 @@
+module CWindows [system] {
+    header "include.h"
+    export *
+}

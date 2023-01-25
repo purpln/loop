@@ -1,6 +1,6 @@
-#if os(macOS) || os(iOS)
-
+#if os(macOS) || os(iOS) || os(watchOS) || os(tvOS)
 import Darwin.C
+import CApple
 
 public typealias Poller = Kqueue
 public typealias Event = kevent
@@ -117,7 +117,7 @@ public struct Kqueue: PollerProtocol {
             changes = []
 
             guard count >= 0 || errno == EINTR else {
-                throw SystemError()
+                throw Loop.Error()
             }
         }
 

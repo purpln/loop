@@ -1,6 +1,6 @@
-#if os(macOS) || os(iOS)
+#if os(macOS) || os(iOS) || os(watchOS) || os(tvOS)
 import Darwin.C
-#elseif os(Linux)
+#elseif os(Linux) || os(Android) || os(FreeBSD)
 import Glibc
 #endif
 
@@ -25,13 +25,13 @@ public struct Descriptor: RawRepresentable, Sendable {
     }
 }
 
-#if os(macOS) || os(iOS)
+#if os(macOS) || os(iOS) || os(watchOS) || os(tvOS)
 extension Descriptor {
     public static var maxLimit: Int {
         Int(OPEN_MAX)
     }
 }
-#elseif os(Linux)
+#elseif os(Linux) || os(Android) || os(FreeBSD)
 extension Descriptor {
     public static var maxLimit: Int {
         var rlim = rlimit()
