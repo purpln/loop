@@ -95,23 +95,15 @@ public struct Kqueue: PollerProtocol {
     }
 
     public mutating func poll(deadline: Instant?) throws -> ArraySlice<Event> {
-        var count: Int32 = -1
+        var count: Int32 = -1 { didSet { print(count) } }
 
         while count < 0 {
             if let deadline = deadline {
                 var timeout = deadline.timeout
-                count = kevent(
-                    descriptor.rawValue,
-                    changes, Int32(changes.count),
-                    &events, Int32(events.count),
-                    &timeout)
+                count = kevent(descriptor.rawValue, changes, Int32(changes.count), &events, Int32(events.count), &timeout)
             } else {
                 var events = self.events
-                count = kevent(
-                    descriptor.rawValue,
-                    changes, Int32(changes.count),
-                    &events, Int32(events.count),
-                    nil)
+                count = kevent(descriptor.rawValue, changes, Int32(changes.count), &events, Int32(events.count), nil)
             }
 
             changes = []

@@ -39,7 +39,7 @@ public actor Loop {
         }
     }
     
-    func scheduleReady(_ events: ArraySlice<Event>) {
+    private func scheduleReady(_ events: ArraySlice<Event>) {
         for event in events {
             let pair = handlers[event.descriptor]
 
@@ -63,7 +63,7 @@ public actor Loop {
         }
     }
 
-    func insertContinuation(_ handler: UnsafeContinuation<Void, Swift.Error>, for descriptor: Descriptor, event: IO, deadline: Instant?) {
+    private func insertContinuation(_ handler: UnsafeContinuation<Void, Swift.Error>, for descriptor: Descriptor, event: IO, deadline: Instant?) {
         switch event {
         case .read:
             guard handlers[descriptor].read == nil else {
@@ -81,7 +81,7 @@ public actor Loop {
         poller.add(socket: descriptor, event: event)
     }
     
-    func removeContinuation(for descriptor: Descriptor, event: IO) {
+    private func removeContinuation(for descriptor: Descriptor, event: IO) {
         switch event {
         case .read: handlers[descriptor].read = nil
         case .write: handlers[descriptor].write = nil
