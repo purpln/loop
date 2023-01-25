@@ -32,7 +32,15 @@ public actor Loop {
         executing = false
     }
     
-    private func poll(deadline: Instant) throws {
+    public func wait(for socket: Descriptor, event: IO, deadline: Instant?) async throws {
+        try await withUnsafeThrowingContinuation { continuation in
+            insertContinuation(continuation, for: socket, event: event, deadline: deadline)
+        }
+    }
+}
+    
+extension Loop {
+    private func poll(deadline: Instant?) throws {
         let events = try poller.poll(deadline: deadline)
         if events.count != 0 {
             scheduleReady(events)
@@ -54,12 +62,6 @@ public actor Loop {
                 removeContinuation(for: event.descriptor, event: .write)
                 handler.resume(returning: ())
             }
-        }
-    }
-    
-    public func wait(for socket: Descriptor, event: IO, deadline: Instant?) async throws {
-        try await withUnsafeThrowingContinuation { continuation in
-            insertContinuation(continuation, for: socket, event: event, deadline: deadline)
         }
     }
 
