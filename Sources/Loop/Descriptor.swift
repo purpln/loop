@@ -4,7 +4,7 @@ import Darwin.C
 import Glibc
 #endif
 
-public struct Descriptor: RawRepresentable, Sendable {
+public struct Descriptor: RawRepresentable, Sendable, Equatable, Hashable {
     public let rawValue: Int32
 
     public init?(rawValue: Int32) {
@@ -23,6 +23,10 @@ public struct Descriptor: RawRepresentable, Sendable {
         get { fcntl(rawValue, F_GETFL, 0) }
         nonmutating set { _ = fcntl(rawValue, F_SETFL, newValue) }
     }
+}
+
+public extension Descriptor {
+    static var zero: Self { Descriptor(rawValue: 0)! }
 }
 
 #if os(macOS) || os(iOS) || os(watchOS) || os(tvOS)
