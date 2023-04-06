@@ -71,13 +71,13 @@ extension Loop {
         switch event {
         case .read:
             guard handlers[descriptor].read == nil else {
-                handler.resume(throwing: Loop.Error.alreadyInUse)
+                handler.resume(throwing: PlatformError.alreadyInUse)
                 return
             }
             handlers[descriptor].read = handler
         case .write:
             guard handlers[descriptor].write == nil else {
-                handler.resume(throwing: Loop.Error.alreadyInUse)
+                handler.resume(throwing: PlatformError.alreadyInUse)
                 return
             }
             handlers[descriptor].write = handler

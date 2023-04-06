@@ -111,7 +111,7 @@ public struct Kqueue: PollerProtocol {
             changes = []
 
             guard count >= 0 || errno == EINTR else {
-                throw Loop.Error()
+                throw PlatformError()
             }
         }
 
