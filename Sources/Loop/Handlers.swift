@@ -1,3 +1,5 @@
+import Platform
+
 internal struct Handlers {
     public var read: UnsafeContinuation<Void, Error>?
     public var write: UnsafeContinuation<Void, Error>?

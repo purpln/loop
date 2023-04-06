@@ -1,3 +1,5 @@
+import Platform
+
 #if os(macOS) || os(iOS) || os(watchOS) || os(tvOS)
 import Darwin.C
 import CApple

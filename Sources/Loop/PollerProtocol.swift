@@ -1,3 +1,5 @@
+import Platform
+
 protocol PollerProtocol {
     var descriptor: Descriptor { get }
     mutating func poll(deadline: Instant?) throws -> ArraySlice<Event>

@@ -1,3 +1,5 @@
+import Platform
+
 public typealias Instant = ContinuousClock.Instant
 
 public let loop: Loop = .init()
