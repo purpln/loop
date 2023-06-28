@@ -1,6 +1,7 @@
 #if os(Linux) || os(Android) || os(FreeBSD)
 import Glibc
 import CLinux
+import Platform
 
 public typealias Poller = Epoll
 public typealias Event = epoll_event

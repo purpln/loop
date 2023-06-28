@@ -1,8 +1,7 @@
-import Platform
-
 #if os(macOS) || os(iOS) || os(watchOS) || os(tvOS)
 import Darwin.C
 import CApple
+import Platform
 
 public typealias Poller = Kqueue
 public typealias Event = kevent
