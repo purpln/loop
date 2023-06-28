@@ -72,7 +72,7 @@ public struct Epoll: PollerProtocol {
         while count < 0 {
             count = epoll_wait(descriptor.rawValue, &events, Int32(events.count), deadline?.timeout ?? -1)
             guard count >= 0 || errno == EINTR else {
-                throw Loop.Error()
+                throw PlatformError()
             }
         }
         return events.prefix(upTo: Int(count))
